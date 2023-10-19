@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
-* isCommandChain - checks if the current character in the buffer is a command chain delimiter
+* isCommandChain - checks if the current char in buffer is a chain delimiter
 * @info: the parameter struct
 * @buf: Character buffer
 * @p: Address of the current position in buf
@@ -11,7 +11,7 @@
 int isCommandChain(info_t *info, char *buf, size_t *p)
 {
     size_t j = *p;
-
+    
     if (buf[j] == '|' && buf[j + 1] == '|')
     {
         buf[j] = 0;
@@ -21,7 +21,7 @@ int isCommandChain(info_t *info, char *buf, size_t *p)
     else if (buf[j] == '&' && buf[j + 1] == '&')
     {
         buf[j] = 0;
-        j++;
+        j++ ;
         info->cmdBufType = CMD_AND;
     }
     else if (buf[j] == ';') /* Found the end of this command */
@@ -33,13 +33,13 @@ int isCommandChain(info_t *info, char *buf, size_t *p)
     {
         return (0);
     }
-
+    
     *p = j;
     return (1);
 }
 
 /**
-* checkChain - checks whether we should continue chaining based on the last status
+* checkChain - checks if we should continue chaining based on last status
 * @info: Structure containing relevant information.
 * @buf: Character buffer.
 * @p: Address of the current position in buf.
@@ -51,7 +51,7 @@ int isCommandChain(info_t *info, char *buf, size_t *p)
 void checkChain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
 {
     size_t j = *p;
-
+    
     if (info->cmdBufType == CMD_AND)
     {
         if (info->status)
@@ -68,7 +68,7 @@ void checkChain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
             j = len;
         }
     }
-
+    
     *p = j;
 }
 
@@ -80,23 +80,23 @@ void checkChain(info_t *info, char *buf, size_t *p, size_t i, size_t len)
 */
 int replaceCommandAlias(info_t *info)
 {
-    int i;
-    list_t *node;
-    char *p;
+int i;
+list_t *node;
+char *p;
 
-    for (i = 0; i < 10; i++)
+for (i = 0; i < 10; i++)
+{
+    node = node_starts_with(info->alias, info->argv[0], '=');
+    if (!node)
+        return (0);
+    free(info->argv[0]);
+    p = _strchr(node->str, '=');
+    if (!p)
+        return (0);
+    p = _strdup(p + 1);
+    if (!p)
     {
-        node = node_starts_with(info->alias, info->argv[0], '=');
-        if (!node)
-            return (0);
-        free(info->argv[0]);
-        p = _strchr(node->str, '=');
-        if (!p)
-            return (0);
-        p = _strdup(p + 1);
-        if (!p)
-        {
-            return (0);
+        return (0);
         info->argv[0] = p;
     }
 
@@ -104,7 +104,7 @@ int replaceCommandAlias(info_t *info)
 }
 
 /**
-* replaceEnvironmentVars - replaces the environment variables in the tokenized string
+* replaceEnvironmentVars - replaces environment variables in tokenized string
 * @info: Structure containing relevant information.
 *
 * Return: 1 if replaced, 0 otherwise.
@@ -113,36 +113,35 @@ int replaceEnvironmentVars(info_t *info)
 {
     int i = 0;
     list_t *node;
-
+    
     for (i = 0; info->argv[i]; i++)
     {
         if (info->argv[i][0] != '$' || !info->argv[i][1])
         {
             continue;
         }
-
+        
         if (!strcmp(info->argv[i], "$?"))
         {
             replaceString(&(info->argv[i]), _strdup(convertNumber(info->status, 10, 0)));
             continue;
         }
-
+        
         if (!strcmp(info->argv[i], "$$"))
         {
             replaceString(&(info->argv[i]), _strdup(convertNumber(getpid(), 10, 0)));
             continue;
         }
-
+        
         node = findNodeStartsWith(info->env, &info->argv[i][1], '=');
         if (node)
         {
             replaceString(&(info->argv[i]), _strdup(strchr(node->str, '=') + 1));
             continue;
         }
-
+        
         replaceString(&info->argv[i], _strdup(""));
     }
-
     return (0);
 }
 
@@ -157,5 +156,5 @@ int replaceString(char **old, char *new)
 {
     free(*old);
     *old = new;
-    return 1;
+    return (1);
 }

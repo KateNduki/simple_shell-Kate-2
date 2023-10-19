@@ -24,7 +24,7 @@ i++;
 * @c: The character to be printed
 *
 * This function writes a character to the standard error stream.
-* Return: On success, it returns 1. On error, -1 is returned, and errno is set appropriatly.
+* Return: On success, return 1. On error, return -1, and errno is set appropriatly.
 */
 int write_error_character(char c)
 {
@@ -47,7 +47,7 @@ return (1);
 * @fd: The file descriptor to write to
 *
 * This function writes a character to the specified file descriptors.
-* Return: On success, it returns 1. On error, -1 is returned, and errno is set appropriately.
+* Return: On success, returns 1. On error, return -1, and errno is set appropriately.
 */
 int write_to_fd(char c, int fd)
 {
@@ -84,3 +84,4 @@ i += write_to_fd(*str++, fd);
 }
 return (i);
 }
+

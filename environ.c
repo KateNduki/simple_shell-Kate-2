@@ -38,7 +38,7 @@ return (NULL);
 * mysetenv_var - Initializes a new variable or modify a current one.
 * @info: Structure contains potential arguments for the function.
 *
-* This function initializes a new environment variable or modifies an existing one.
+* This function initializes new environment variable or modifies existing one.
 * Return: Always 0.
 */
 int mysetenv_var(info_t *info)
@@ -79,7 +79,7 @@ return (0);
 * populate_env_list - Populates the environment linked list.
 * @info: Structure containss potential arguments for the function.
 *
-* This function populates the environment linked list from the system's environment.
+* This function populates environment linked list from the system's environment.
 * Return: Always 0.
 */
 int populate_env_list(info_t *info)
@@ -92,3 +92,4 @@ add_node_end(&node, environ[i], 0);
 info->env = node;
 return (0);
 }
+

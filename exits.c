@@ -1,7 +1,7 @@
-#include "custom_lib.h"
+#include "shell.h"
 
 /**
- * my_strncpy - Custom string copy function
+ * strncpy - Custom string copy function
  * @destination: The destination string to copy to
  * @source: The source string
  * @num_chars: The max no of characters to copy
@@ -27,7 +27,7 @@ char *my_strncpy(char *destination, char *source, int num_chars)
 			j++;
 		}
 	}
-	return result;
+	return (result);
 }
 
 /**
@@ -54,7 +54,7 @@ char *my_strncat(char *dest, char *src, int max_bytes)
 	}
 	if (j < max_bytes)
 		dest[i] = '\0';
-	return result;
+	return (result);
 }
 
 /**
@@ -67,9 +67,9 @@ char *my_strchr(char *str, char character)
 {
 	do {
 		if (*str == character)
-			return str;
+			return (str);
 	} while (*str++ != '\0');
 
-	return NULL;
+	return (NULL);
 }
 
